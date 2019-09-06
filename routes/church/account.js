@@ -88,5 +88,28 @@ router.post('/get', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
     }
 });
+//forgot account
+router.post('/forgot', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesExpect(ui, 1)) {
+        db.Churches.findOne({where: {c_token: ui.token}})
+            .then(church => {
+                if (church) {
+                    res.jsonp({
+                        status: true,
+                        data: church.get({plain: true}),
+                        msg: 'Success'
+                    })
+                } else {
+                    res.jsonp({status: false, data: [], msg: 'Invalid token supplied...'})
+                }
+            })
+            .catch(err => {
+                res.jsonp({status: false, data: [], msg: 'An error has occur, server side'})
+            })
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
+    }
+});
 
 module.exports = router;
