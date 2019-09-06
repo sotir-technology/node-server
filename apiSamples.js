@@ -2,7 +2,9 @@
 // sample data for church creations
 // all response from server is using retrofit signature.
 // {status: true, data: {}, msg: 'Any problem here'}
-
+//
+// chureskd_cha2z, wv#Bf6A4HSXR, chureskd_sotir
+//
 // status: must be true if what you r expecting is okay
 // data: every data that you need from the server will be here. isArray when data is array, will be object if data is object. default []
 // msg: check server reasons for false response
