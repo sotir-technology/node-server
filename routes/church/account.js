@@ -44,7 +44,7 @@ router.post('/create', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
     }
 });
-//login function
+//login function here
 router.post('/login', function (req, res, next) {
     let ui = req.body; //User info...
     if (func.checkJSONValuesExpect(ui, 2)) {
