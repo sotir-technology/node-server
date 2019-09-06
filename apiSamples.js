@@ -21,6 +21,10 @@
     c_date: {type: DATE, defaultValue: NOW},
     c_token: {type: STRING, defaultValue: '', allowNull: false},
  */
+
+// ##To create/add church
+// http://api.churcha2z.org/church/create/?SSK=SERVER_SIDE_KEY
+// Then Post the below data
 //sever requirements
 let church_data = {
     name: 'Church Name',
@@ -32,3 +36,38 @@ let church_data = {
     state: 'Church Location/State',
     street: 'Church street/address',
 };
+// response
+// {status: true, data: object, msg: 'success} //status will be true if data stored otherwise read msg on status false
+
+
+// ##To login
+// http://api.churcha2z.org/church/login/?SSK=SERVER_SIDE_KEY
+// expected data to be post
+let data = {
+  email: 'church@church.com',
+  password: '12345'
+};
+// response
+// {status: true, data: object, msg: 'success} //status will be true if data stored otherwise read msg on status false
+
+
+// ##To get user after login
+// http://api.churcha2z.org/church/get/?SSK=SERVER_SIDE_KEY
+// expected data to be post
+let data = {
+    token: 'church@church.com',
+};
+// response
+// {status: true, data: object, msg: 'success} //status will be true if data stored otherwise read msg on status false
+
+
+// ##To get user after login
+// http://api.churcha2z.org/church/forgot/?SSK=SERVER_SIDE_KEY
+// expected data to be post
+let data = {
+    email: 'church@church.com',
+    phone: '08123456789'
+};
+// response
+// {status: true, data: object, msg: 'success} //status will be true if data stored otherwise read msg on status false
+
