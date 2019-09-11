@@ -1,3 +1,4 @@
+let http = require('http');
 let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
@@ -28,4 +29,11 @@ app.use('/user', authRouter); //general login class
 app.use('*', function (req, res, next) {
     res.json({'status': false, 'data': [], msg: 'Router not valid...'});
 });
+
+//start our simple server
+let port = 3001;
+app.set('port', port);
+let server = http.createServer(app);
+server.listen(port);
+
 module.exports = app;
