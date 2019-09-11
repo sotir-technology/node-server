@@ -6,29 +6,28 @@ let func = require('./../../lib/functions');
 //start creating account for church
 router.post('/create', function (req, res, next) {
     let ui = req.body; //User info...
-    if (func.checkJSONValuesExpect(ui, 8)) {
+    if (func.checkJSONValuesExpect(ui, 7)) {
         //save data
         let dbData = {
-            c_name: ui.name,
-            c_email: ui.email,
-            c_phone: ui.phone,
-            c_country: ui.country,
-            c_state: ui.state,
-            c_street: ui.street,
-            c_founder: ui.founder,
-            c_password: func.md5Pass(ui.password),
+            a_name: ui.name,
+            a_email: ui.email,
+            a_phone: ui.phone,
+            a_country: ui.country,
+            a_state: ui.state,
+            a_street: ui.street,
+            a_password: func.sha1Pass(ui.password),
         };
         //push to db
-        db.Churches.findOrCreate({where: {c_email: ui.email}, defaults: dbData})
-            .then(([church, created]) => {
-                let plainData = church.get({plain: true});
+        db.Account.findOrCreate({where: {a_email: ui.email}, defaults: dbData})
+            .then(([account, created]) => {
+                let plainData = account.get({plain: true});
                 if (created) {
                     res.jsonp({status: true, data: plainData, msg: 'success'})
                 } else {
                     res.jsonp({
                         status: false,
                         data: [],
-                        msg: plainData.c_name + " already exist with " + plainData.c_email + ", try re-login"
+                        msg: plainData.a_name + " already exist with " + plainData.a_email + ", try re-login"
                     })
                 }
             })
@@ -48,11 +47,11 @@ router.post('/create', function (req, res, next) {
 router.post('/login', function (req, res, next) {
     let ui = req.body; //User info...
     if (func.checkJSONValuesExpect(ui, 2)) {
-        db.Churches.findOne({where: {c_email: ui.email, c_password: func.md5Pass(ui.password)}})
-            .then((church) => {
-                if (church) {
-                    church.update({c_token: func.md5Pass(ui.email + new Date().toUTCString())});
-                    res.jsonp({status: true, data: church.get({plain: true}), msg: 'Successful'})
+        db.Account.findOne({where: {a_email: ui.email, a_password: func.sha1Pass(ui.password)}})
+            .then((account) => {
+                if (account) {
+                    account.update({a_token: func.sha1Pass(ui.email + new Date().toUTCString())});
+                    res.jsonp({status: true, data: account.get({plain: true}), msg: 'Successful'})
                 } else {
                     res.jsonp({status: false, data: [], msg: 'Invalid user account details'})
                 }
@@ -69,12 +68,12 @@ router.post('/login', function (req, res, next) {
 router.post('/get', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 1)) {
-        db.Churches.findOne({where: {c_token: ui.token}})
-            .then(church => {
-                if (church) {
+        db.Account.findOne({where: {a_token: ui.token}})
+            .then(account => {
+                if (account) {
                     res.jsonp({
                         status: true,
-                        data: church.get({plain: true}),
+                        data: account.get({plain: true}),
                         msg: 'Success'
                     })
                 } else {
@@ -93,11 +92,11 @@ router.post('/forgot', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 1)) {
         db.Churches.findOne({where: {c_token: ui.token}})
-            .then(church => {
-                if (church) {
+            .then(account => {
+                if (account) {
                     res.jsonp({
                         status: true,
-                        data: church.get({plain: true}),
+                        data: account.get({plain: true}),
                         msg: 'Success'
                     })
                 } else {

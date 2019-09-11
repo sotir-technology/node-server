@@ -3,7 +3,7 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let indexRouter = require('./routes/index');
-let authRouter = require('./routes/church/account');
+let authRouter = require('./routes/user/account');
 let func = require('./lib/functions');
 let app = express();
 
@@ -22,7 +22,7 @@ app.use(func.controlHeader);
 app.all('*', func.tokenController);
 
 app.use('/', indexRouter); //index router
-app.use('/church', authRouter); //general login class
+app.use('/user', authRouter); //general login class
 
 //handle error
 app.use('*', function (req, res, next) {
