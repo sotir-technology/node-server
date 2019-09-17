@@ -5,11 +5,9 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let indexRouter = require('./routes/index');
 let authRouter = require('./routes/user/account');
+let serviceRouter = require('./routes/services/services');
 let func = require('./lib/functions');
 let app = express();
-
-//import db and initialized
-let db = require('./lib/Db');
 
 //App uses
 app.use(logger('dev'));
@@ -24,6 +22,7 @@ app.all('*', func.tokenController);
 
 app.use('/', indexRouter); //index router
 app.use('/user', authRouter); //general login class
+app.use('/services', serviceRouter); //general services class
 
 //handle error
 app.use('*', function (req, res, next) {

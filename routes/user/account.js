@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let db = require('./../../lib/Db');
+let db = require('./../../models/model_account');
 let func = require('./../../lib/functions');
 
 //start creating account for church
@@ -129,24 +129,87 @@ router.post('/update-psw', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'});
     }
 });
-//forgot account
-router.post('/forgot', function (req, res, next) {
+//request account password
+router.post('/request-psw-reset', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 1)) {
-        db.Churches.findOne({where: {c_token: ui.token}})
-            .then(account => {
-                if (account) {
-                    res.jsonp({
-                        status: true,
-                        data: account.get({plain: true}),
-                        msg: 'Success'
-                    })
+        //arrange reset token
+        let newResetToken = func.sha1Pass(new Date().toUTCString() + ui.email);
+        db.RecoverAcc.findOrCreate({where: {r_email: ui.email}, defaults: {r_email: ui.email, r_token: newResetToken}})
+            .then(([acc, created]) => {
+                if (!acc) {
+                    res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
+                    return;
+                }
+                //email data
+                let data = "<h2>Hi !,</h2>" +
+                    "<h5>You just made a password reset command at " + new Date().toUTCString() + "</h5>" +
+                    "<p>If you didn't perform this action, please ignore this otherwise use the link below to reset you password</p>" +
+                    "<a href='http://churcha2z.org/account/reset/'>" + newResetToken + "</a><br>Contact Us: admin@churcha2z.orh";
+                if (created) {
+                    //created newly
+                    func.sendMail(ui.email, "ChurchA2z PswRest", data);
+                    //print success after email sent
+                    res.jsonp({status: true, ui, msg: 'Account reset token generated and sent to your mail'})
                 } else {
-                    res.jsonp({status: false, data: [], msg: 'Invalid token supplied...'})
+                    func.sendMail(ui.email, "ChurchA2z PswRest", data);
+                    acc.update({r_token: newResetToken, r_status: false});
+                    res.jsonp({status: true, ui, msg: 'Account reset token re-generated and sent to your mail'})
+                }
+            })
+            .catch((err) => {
+                res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
+            })
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
+    }
+});
+// update forgot password
+router.post('/forgot-psw/:token?', function (req, res, next) {
+    let ui = req.body;
+    let ptoken = req.params.token;
+    if (func.checkJSONValuesExpect(ui, 0)) {
+        //change password on token valid
+        if (!ptoken) {
+            res.jsonp({status: false, data: [], msg: 'Resetting route not well formed, token is missing'});
+            return;
+        }
+        //proceed to check if token is available
+        db.RecoverAcc.findOne({where: {r_token: ptoken, r_status: false}})
+            .then((rec) => {
+                if (rec) {
+                    //account found and never reset
+                    let newpassword = func.randomStr(3, 10);
+                    db.Account.findOne({where: {a_email: rec.r_email}})
+                        .then(acc => {
+                            if (acc) {
+                                //update password
+                                acc.update({a_password: func.sha1Pass(newpassword)});
+                                res.jsonp({
+                                    status: true,
+                                    data: {email: rec.r_email, newpass: newpassword},
+                                    msg: 'Password has been reset randomly, login with the new password'
+                                })
+                            } else {
+                                res.jsonp({
+                                    status: false,
+                                    data: [],
+                                    msg: "Could not find the initiator or password recovery token"
+                                })
+                            }
+                        })
+                        .catch(err => {
+                            res.jsonp({status: false, data: [], msg: "Unable to update user password, try again"})
+                        });
+                    //update token details
+                    rec.update({r_status: true});
+                } else {
+                    //account not found or used token
+                    res.jsonp({status: false, data: [], msg: "Broken token or used already token supplied..."})
                 }
             })
             .catch(err => {
-                res.jsonp({status: false, data: [], msg: 'An error has occur, server side'})
+                res.jsonp({status: false, data: [], msg: 'Something went wrong on the server side, try again'})
             })
     } else {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
