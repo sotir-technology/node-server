@@ -134,31 +134,52 @@ router.post('/request-psw-reset', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 1)) {
         //arrange reset token
-        let newResetToken = func.sha1Pass(new Date().toUTCString() + ui.email);
-        db.RecoverAcc.findOrCreate({where: {r_email: ui.email}, defaults: {r_email: ui.email, r_token: newResetToken}})
-            .then(([acc, created]) => {
-                if (!acc) {
-                    res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
-                    return;
-                }
-                //email data
-                let data = "<h2>Hi !,</h2>" +
-                    "<h5>You just made a password reset command at " + new Date().toUTCString() + "</h5>" +
-                    "<p>If you didn't perform this action, please ignore this otherwise use the link below to reset you password</p>" +
-                    "<a href='http://churcha2z.org/account/reset/'>" + newResetToken + "</a><br>Contact Us: admin@churcha2z.orh";
-                if (created) {
-                    //created newly
-                    func.sendMail(ui.email, "ChurchA2z PswRest", data);
-                    //print success after email sent
-                    res.jsonp({status: true, ui, msg: 'Account reset token generated and sent to your mail'})
+        db.Account.findOne({where: {a_email: ui.email}})
+            .then(user => {
+                if (user) {
+                    let newResetToken = func.sha1Pass(new Date().toUTCString() + ui.email);
+                    db.RecoverAcc.findOrCreate({
+                        where: {r_email: ui.email},
+                        defaults: {r_email: ui.email, r_token: newResetToken}
+                    })
+                        .then(([acc, created]) => {
+                            if (!acc) {
+                                res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
+                                return;
+                            }
+                            //email data
+                            let data = "<h2>Hi, " + user.a_name.split(" ")[0] + "</h2>" +
+                                "<h5>You just made a password reset command at " + new Date().toUTCString() + "</h5>" +
+                                "<p>If you didn't perform this action, please ignore this otherwise use the link below to reset you password</p>" +
+                                "<a href='http://churcha2z.org/account/reset/'>" + newResetToken + "</a><br>Contact Us: admin@churcha2z.orh";
+                            if (created) {
+                                //created newly
+                                func.sendMail(ui.email, "ChurchA2z PswRest", data);
+                                //print success after email sent
+                                res.jsonp({
+                                    status: true,
+                                    ui,
+                                    msg: 'Account reset token generated and sent to your mail'
+                                })
+                            } else {
+                                func.sendMail(ui.email, "ChurchA2z PswRest", data);
+                                acc.update({r_token: newResetToken, r_status: false});
+                                res.jsonp({
+                                    status: true,
+                                    ui,
+                                    msg: 'Account reset token re-generated and sent to your mail'
+                                })
+                            }
+                        })
+                        .catch((err) => {
+                            res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
+                        });
                 } else {
-                    func.sendMail(ui.email, "ChurchA2z PswRest", data);
-                    acc.update({r_token: newResetToken, r_status: false});
-                    res.jsonp({status: true, ui, msg: 'Account reset token re-generated and sent to your mail'})
+                    res.jsonp({status: false, data: ui, msg: 'Cannot request password reset for non-existing user'})
                 }
             })
-            .catch((err) => {
-                res.jsonp({status: false, data: ui, msg: 'Cannot reset password for non-existing user'})
+            .catch(err => {
+                res.jsonp({status: false, data: ui, msg: 'Temporal error, please try again'})
             })
     } else {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
