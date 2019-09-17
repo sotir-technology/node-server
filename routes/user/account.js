@@ -87,6 +87,48 @@ router.post('/get', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
     }
 });
+//start updating by token
+router.post('/update-acc', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        //updated account
+        db.Account.findOne({where: {a_token: ui.token}})
+            .then((account) => {
+                //apply updates
+                account.update(ui);
+                res.jsonp({status: true, data: account.get({plain: true}), msg: 'Success'});
+            })
+            .catch((err) => {
+                res.jsonp({status: false, data: ui, msg: 'Cannot update non existing user account'});
+            })
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'});
+    }
+});
+//start updating password by token
+router.post('/update-psw', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValues(ui)) {
+        //updated account
+        db.Account.findOne({where: {a_token: ui.token}})
+            .then((account) => {
+                //check for password equality
+                if (func.sha1Pass(ui.pass2) === account.a_password) {
+                    //apply updates
+                    account.update({a_password: func.sha1Pass(ui.pass1)});
+                    res.jsonp({status: true, data: account.get({plain: true}), msg: 'Password changed, success !'});
+                } else {
+                    //password not confirmed
+                    res.jsonp({status: false, data: account.get({plain: true}), msg: 'Wrong old password !'});
+                }
+            })
+            .catch((err) => {
+                res.jsonp({status: false, data: ui, msg: 'Cannot update non existing user password'});
+            })
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'});
+    }
+});
 //forgot account
 router.post('/forgot', function (req, res, next) {
     let ui = req.body;
