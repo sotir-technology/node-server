@@ -77,7 +77,7 @@ router.post('/add', function (req, res, next) {
                     res.jsonp({
                         status: false,
                         data: [],
-                        msg: 'Could not get return purchase data, probably data error'
+                        msg: 'Could not get return purchase data, probably data error or similar email caught'
                     });
                 })
         })

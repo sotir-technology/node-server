@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="24fa0442-50f1-4227-a779-f9cffe2aef9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/functions.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/functions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/model_account.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/model_account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/model_services.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/model_services.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/services/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/services/services.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user/account.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,17 +27,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/services/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="197" column="3" lean-forward="true" selection-start-line="197" selection-start-column="3" selection-end-line="197" selection-end-column="3" />
+            <state relative-caret-position="209">
+              <caret line="79" column="109" selection-start-line="79" selection-start-column="109" selection-end-line="79" selection-end-column="109" />
               <folding>
                 <element signature="e#301#793#0" />
-                <element signature="e#861#3068#0" />
                 <element signature="e#2779#3562#0" />
                 <element signature="e#4000#4242#0" />
-                <element signature="e#6699#7725#0" />
                 <element signature="e#4300#4544#0" />
               </folding>
             </state>
@@ -111,11 +102,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/Db.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+            <state relative-caret-position="161">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -174,8 +165,8 @@
         <option value="$PROJECT_DIR$/models/model_account.js" />
         <option value="$PROJECT_DIR$/lib/functions.js" />
         <option value="$PROJECT_DIR$/models/model_services.js" />
-        <option value="$PROJECT_DIR$/routes/services/services.js" />
         <option value="$PROJECT_DIR$/lib/Db.js" />
+        <option value="$PROJECT_DIR$/routes/services/services.js" />
       </list>
     </option>
   </component>
@@ -252,7 +243,7 @@
       <workItem from="1568202617362" duration="19000" />
       <workItem from="1568662714962" duration="19481000" />
       <workItem from="1568928575007" duration="515000" />
-      <workItem from="1568951895543" duration="32834000" />
+      <workItem from="1568951895543" duration="33721000" />
     </task>
     <task id="LOCAL-00001" summary="Starting On Forgot Password">
       <created>1567731508885</created>
@@ -380,11 +371,25 @@
       <option name="project" value="LOCAL" />
       <updated>1568726825297</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Api Building 20.5%">
+      <created>1569072663172</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1569072663172</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Api Building 20.6%">
+      <created>1569073721031</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1569073721031</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74029000" />
+    <option name="totallyTimeSpent" value="74916000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -430,7 +435,9 @@
     <MESSAGE value="Api Building 16%" />
     <MESSAGE value="Api Building 17%" />
     <MESSAGE value="Api Building 17.5%" />
-    <option name="LAST_COMMIT_MESSAGE" value="Api Building 17.5%" />
+    <MESSAGE value="Api Building 20.5%" />
+    <MESSAGE value="Api Building 20.6%" />
+    <option name="LAST_COMMIT_MESSAGE" value="Api Building 20.6%" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/bin/www">
@@ -529,25 +536,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/services/services.js">
+    <entry file="file://$PROJECT_DIR$/lib/Db.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="197" column="3" lean-forward="true" selection-start-line="197" selection-start-column="3" selection-end-line="197" selection-end-column="3" />
-          <folding>
-            <element signature="e#301#793#0" />
-            <element signature="e#861#3068#0" />
-            <element signature="e#2779#3562#0" />
-            <element signature="e#4000#4242#0" />
-            <element signature="e#6699#7725#0" />
-            <element signature="e#4300#4544#0" />
-          </folding>
+        <state relative-caret-position="161">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Db.js">
+    <entry file="file://$PROJECT_DIR$/routes/services/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+        <state relative-caret-position="209">
+          <caret line="79" column="109" selection-start-line="79" selection-start-column="109" selection-end-line="79" selection-end-column="109" />
+          <folding>
+            <element signature="e#301#793#0" />
+            <element signature="e#2779#3562#0" />
+            <element signature="e#4000#4242#0" />
+            <element signature="e#4300#4544#0" />
+          </folding>
         </state>
       </provider>
     </entry>
