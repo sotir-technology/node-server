@@ -25,7 +25,7 @@ router.post('/add', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 5)) {
         func.tokenApi(ui.token, res, (dec) => {
-            if (!ui.email || ui.password) {
+            if (!ui.email || !ui.password) {
                 res.jsonp({
                     status: false,
                     data: [],
