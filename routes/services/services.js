@@ -45,44 +45,50 @@ router.post('/add', function (req, res, next) {
                 us_email: ui.email,
                 us_password: func.sha1Pass(ui.password),
             };
-            dbServ.UServices.findOrCreate({
-                where: {us_user: dec.a_id, s_id: ui.serviceType, us_identity: identity},
-                defaults: service_data
-            })
-                .then(([service, isNew]) => {
-                    if (isNew) {
-                        res.jsonp({
-                            status: true,
-                            data: service.get({plain: true}),
-                            msg: 'Newly added data'
-                        });
+            dbServ.UServices.findOne({where: {us_email: ui.email,}})
+                .then(found => {
+                    if (!found) {
+                        dbServ.UServices.create(service_data)
+                            .then(service => {
+                                if (service) {
+                                    res.jsonp({
+                                        status: true,
+                                        data: service.get({plain: true}),
+                                        msg: 'Newly added data'
+                                    });
+                                } else {
+                                    res.jsonp({
+                                        status: false,
+                                        data: service.get({plain: true}),
+                                        msg: 'Unable to add new records'
+                                    });
+                                }
+                            })
                     } else {
-                        if (ui.rePurchased) {
-                            service.update({us_enabled: ui.isEnabled});
-                            res.jsonp({
-                                status: true,
-                                data: service.get({plain: true}),
-                                msg: 'Updated an existing data'
-                            });
-                        } else {
-                            res.jsonp({
-                                status: true,
-                                data: service.get({plain: true}),
-                                msg: 'Updated an existing data'
-                            });
-                        }
+                        dbServ.UServices.update(service_data, {
+                            where: {
+                                us_email: ui.email,
+                                us_user: dec.a_id,
+                                s_id: ui.serviceType
+                            }
+                        })
+                            .then(updated => {
+                                res.jsonp({
+                                    status: true,
+                                    data: updated,
+                                    msg: 'User service updated !'
+                                });
+                            })
+                            .catch(err => {
+                                res.jsonp({
+                                    status: false,
+                                    data: [],
+                                    msg: 'Unable to update user data'
+                                });
+                            })
                     }
-                })
-                .catch(err => {
-                    res.jsonp({
-                        status: false,
-                        data: [],
-                        msg: 'Could not get return purchase data, probably data error or similar email caught'
-                    });
-                })
-        })
-    } else {
-        res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'});
+                });
+        });
     }
 });
 // list user associated services
