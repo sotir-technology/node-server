@@ -1,7 +1,9 @@
 let express = require('express');
 let router = express.Router();
 let db = require('./../../models/model_account');
+let dbservices = require('./../../models/model_services');
 let func = require('./../../lib/functions');
+let token = require('jsonwebtoken');
 
 //start creating account for church
 router.post('/create', function (req, res, next) {
@@ -50,7 +52,9 @@ router.post('/login', function (req, res, next) {
         db.Account.findOne({where: {a_email: ui.email, a_password: func.sha1Pass(ui.password)}})
             .then((account) => {
                 if (account) {
-                    account.update({a_token: func.sha1Pass(ui.email + new Date().toUTCString())});
+                    //make a standard token
+                    let tkey = token.sign(account.get({plain: true}), func.tokenConfig.secrete, {expiresIn: func.tokenConfig.exp});
+                    account.update({a_token: tkey});
                     res.jsonp({status: true, data: account.get({plain: true}), msg: 'Successful'})
                 } else {
                     res.jsonp({status: false, data: [], msg: 'Invalid user account details'})
@@ -236,5 +240,10 @@ router.post('/forgot-psw/:token?', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
     }
 });
-
+//testing router
+router.post('/test', (req, res, next) => {
+    console.log(req.body);
+    res.send(req.body);
+    next();
+});
 module.exports = router;

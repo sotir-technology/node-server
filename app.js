@@ -8,6 +8,7 @@ let authRouter = require('./routes/user/account');
 let serviceRouter = require('./routes/services/services');
 let func = require('./lib/functions');
 let app = express();
+let token = require('jsonwebtoken');
 
 //App uses
 app.use(logger('dev'));
@@ -28,7 +29,19 @@ app.use('/services', serviceRouter); //general services class
 app.use('*', function (req, res, next) {
     res.json({'status': false, 'data': [], msg: 'Router not valid...'});
 });
-
+//handle error here
+//Catch every other error
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.jsonp({
+        status: false,
+        data: {
+            error: "Something went wrong at the server side.",
+            reason: err.message
+        },
+        msg: 'Server side error'
+    })
+});
 //start our simple server
 let port = 3001;
 app.set('port', port);

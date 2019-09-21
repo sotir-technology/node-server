@@ -22,7 +22,7 @@ Account.init({
     a_role: {type: Sequelize.INTEGER, allowNull: false, defaultValue: 0},
     a_enable: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: 1},
     a_date: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-    a_token: {type: Sequelize.STRING, defaultValue: '', allowNull: false},
+    a_token: {type: Sequelize.STRING(1000), defaultValue: '', allowNull: false},
 }, {sequelize, modelName: db_prefix + 'account'});
 
 //start account recovery class
