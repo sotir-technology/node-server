@@ -13,26 +13,25 @@ router.post('/login', function (req, res, next) {
         let email = ui.email;
         let password = func.sha1Pass(ui.password);
         dbServ.ULocations.findOne({
-            where: {l_email: email, l_password: password, us_enabled: 1},
-            include: [{model: dbServ.Services, as: 'services'}]
+            where: {l_email: email, l_password: password, l_enabled: 1},
+            include: [{model: dbServ.UPastors, as: 'upastors'}]
         })
-            .then(service => {
-                if (service) {
-                    let d = JSON.stringify(service);
+            .then(locations => {
+                if (locations) {
+                    let d = JSON.stringify(locations);
                     d = JSON.parse(d);
                     d.token = tokenAuth.sign({
-                        us_id: d.us_id,
-                        us_email: d.us_email,
-                        us_identity: d.us_identity,
-                        us_enabled: d.us_enabled
+                        l_id: d.l_id,
+                        l_email: d.l_email,
+                        l_enabled: d.l_enabled
                     });
                     res.jsonp({status: true, data: d, msg: 'Success !'});
                 } else {
-                    res.jsonp({status: false, data: [], msg: 'Invalid service login details'});
+                    res.jsonp({status: false, data: [], msg: 'Invalid location login details'});
                 }
             })
             .catch(err => {
-                res.jsonp({status: false, data: [], msg: 'Service error occur at server side..'});
+                res.jsonp({status: false, data: [], msg: 'Location error occur at server side..'});
             })
     } else {
         res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});

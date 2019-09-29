@@ -88,6 +88,7 @@ ULocations.init({
     l_phone_number: {type: Sequelize.STRING, allowNull: true},
     l_password: {type: Sequelize.STRING, allowNull: true},
     l_token: {type: Sequelize.STRING, allowNull: true},
+    l_enabled: {type: Sequelize.BOOLEAN, defaultValue: true},
 }, {sequelize, modelName: db_prefix + "ulocations"});
 
 //do table binding and linking
