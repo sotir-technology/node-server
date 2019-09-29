@@ -217,10 +217,10 @@ router.post('/pastor-get', function (req, res, next) {
         tokenAuth.verify(ui.token, res, cbk => {
             dbServ.UPastors.findAll({where: {us_id: cbk.us_id}})
                 .then(pastors => {
-                    if(pastors){
+                    if (pastors) {
                         let pst = JSON.stringify(pastors);
                         res.jsonp({status: true, data: JSON.parse(pst), msg: 'Pastors successfully loaded !'});
-                    }else {
+                    } else {
                         res.jsonp({status: false, data: [], msg: 'No pastor entries...'});
                     }
                 })
@@ -314,10 +314,10 @@ router.post('/location-get', function (req, res, next) {
         tokenAuth.verify(ui.token, res, cbk => {
             dbServ.ULocations.findAll({where: {us_id: cbk.us_id}})
                 .then(location => {
-                    if(location){
+                    if (location) {
                         let locs = JSON.stringify(location);
                         res.jsonp({status: true, data: JSON.parse(pst), msg: 'Location successfully loaded !'});
-                    }else {
+                    } else {
                         res.jsonp({status: false, data: [], msg: 'No location entries...'});
                     }
                 })
@@ -335,6 +335,7 @@ router.post('/location-add', function (req, res, next) {
     if (func.checkJSONValuesFalse(ui)) {
         tokenAuth.verify(ui.token, res, cbk => {
             let data = ui.data;
+            data.us_id = cbk.us_id;
             data.l_password = func.sha1Pass(ui.data.l_password);
             dbServ.ULocations.findOrCreate({where: {l_email: ui.email}, defaults: data})
                 .then(([location, created]) => {

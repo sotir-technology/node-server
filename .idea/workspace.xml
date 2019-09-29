@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24fa0442-50f1-4227-a779-f9cffe2aef9c" name="Default Changelist" comment="Api Building 20.8%">
-      <change afterPath="$PROJECT_DIR$/lib/TokenAuth.js" afterDir="false" />
+    <list default="true" id="24fa0442-50f1-4227-a779-f9cffe2aef9c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Db.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/functions.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/functions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/model_services.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/model_services.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/services/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/services/services.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user/account.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/services/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="332" column="24" lean-forward="true" selection-start-line="332" selection-start-column="24" selection-end-line="332" selection-end-column="24" />
+            <state relative-caret-position="172">
+              <caret line="337" column="35" selection-start-line="337" selection-start-column="35" selection-end-line="337" selection-end-column="35" />
               <folding>
                 <element signature="e#338#834#0" />
                 <element signature="e#419#682#0" />
@@ -65,11 +60,6 @@
                 <element signature="e#3393#3671#0" />
                 <element signature="e#3437#3639#0" />
                 <element signature="e#3825#4706#0" />
-                <element signature="e#3889#4597#0" />
-                <element signature="e#3937#4590#0" />
-                <element signature="e#3976#4103#0" />
-                <element signature="e#4137#4426#0" />
-                <element signature="e#4269#4407#0" />
                 <element signature="e#4458#4579#0" />
                 <element signature="e#4603#4704#0" />
                 <element signature="e#4800#7060#0" />
@@ -92,11 +82,13 @@
                 <element signature="e#7137#8225#0" />
                 <element signature="e#7827#7942#0" />
                 <element signature="e#7984#8098#0" />
+                <element signature="e#8534#8787#0" />
                 <element signature="e#8521#8772#0" />
                 <element signature="e#9784#10716#0" />
                 <element signature="e#10758#11011#0" />
-                <element signature="e#11662#11915#0" />
+                <element signature="e#12584#13443#0" />
                 <element signature="e#12695#12948#0" />
+                <element signature="e#13873#14126#0" />
                 <element signature="e#8291#8542#0" />
               </folding>
             </state>
@@ -106,7 +98,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/user/account.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="230">
               <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
               <folding>
                 <element signature="e#342#1760#0" />
@@ -243,8 +235,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/model_services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+            <state relative-caret-position="39">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="e#324#657#0" />
                 <element signature="e#791#2048#0" />
@@ -390,7 +382,7 @@
       <workItem from="1569336561166" duration="12000" />
       <workItem from="1569340059272" duration="40000" />
       <workItem from="1569500095549" duration="1273000" />
-      <workItem from="1569750248001" duration="9053000" />
+      <workItem from="1569750248001" duration="11215000" />
     </task>
     <task id="LOCAL-00001" summary="Starting On Forgot Password">
       <created>1567731508885</created>
@@ -553,11 +545,25 @@
       <option name="project" value="LOCAL" />
       <updated>1569077883820</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Api Building 20.9%">
+      <created>1569766756785</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1569766756785</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Api Building 20.10%">
+      <created>1569787503556</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1569787503556</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89883000" />
+    <option name="totallyTimeSpent" value="92045000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -606,7 +612,9 @@
     <MESSAGE value="Api Building 20.6%" />
     <MESSAGE value="Api Building 20.5%" />
     <MESSAGE value="Api Building 20.8%" />
-    <option name="LAST_COMMIT_MESSAGE" value="Api Building 20.8%" />
+    <MESSAGE value="Api Building 20.9%" />
+    <MESSAGE value="Api Building 20.10%" />
+    <option name="LAST_COMMIT_MESSAGE" value="Api Building 20.10%" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/bin/www">
@@ -658,13 +666,6 @@
     <entry file="file://$PROJECT_DIR$/node_modules/jsonwebtoken/index.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Db.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/TokenAuth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -697,9 +698,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/user/account.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
+        <state relative-caret-position="230">
           <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
           <folding>
             <element signature="e#342#1760#0" />
@@ -778,8 +786,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/model_services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+        <state relative-caret-position="39">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#324#657#0" />
             <element signature="e#791#2048#0" />
@@ -791,8 +799,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/services/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="332" column="24" lean-forward="true" selection-start-line="332" selection-start-column="24" selection-end-line="332" selection-end-column="24" />
+        <state relative-caret-position="172">
+          <caret line="337" column="35" selection-start-line="337" selection-start-column="35" selection-end-line="337" selection-end-column="35" />
           <folding>
             <element signature="e#338#834#0" />
             <element signature="e#419#682#0" />
@@ -821,11 +829,6 @@
             <element signature="e#3393#3671#0" />
             <element signature="e#3437#3639#0" />
             <element signature="e#3825#4706#0" />
-            <element signature="e#3889#4597#0" />
-            <element signature="e#3937#4590#0" />
-            <element signature="e#3976#4103#0" />
-            <element signature="e#4137#4426#0" />
-            <element signature="e#4269#4407#0" />
             <element signature="e#4458#4579#0" />
             <element signature="e#4603#4704#0" />
             <element signature="e#4800#7060#0" />
@@ -848,11 +851,13 @@
             <element signature="e#7137#8225#0" />
             <element signature="e#7827#7942#0" />
             <element signature="e#7984#8098#0" />
+            <element signature="e#8534#8787#0" />
             <element signature="e#8521#8772#0" />
             <element signature="e#9784#10716#0" />
             <element signature="e#10758#11011#0" />
-            <element signature="e#11662#11915#0" />
+            <element signature="e#12584#13443#0" />
             <element signature="e#12695#12948#0" />
+            <element signature="e#13873#14126#0" />
             <element signature="e#8291#8542#0" />
           </folding>
         </state>
