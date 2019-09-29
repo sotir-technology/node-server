@@ -210,6 +210,28 @@ router.post('/login', function (req, res, next) {
 });
 
 ///START EXTERNAL SERVICE PERFORMANCE////
+//PASTOR GET
+router.post('/pastor-get', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            dbServ.UPastors.findAll({where: {us_id: cbk.us_id}})
+                .then(pastors => {
+                    if(pastors){
+                        let pst = JSON.stringify(pastors);
+                        res.jsonp({status: true, data: JSON.parse(pst), msg: 'Pastors successfully loaded !'});
+                    }else {
+                        res.jsonp({status: false, data: [], msg: 'No pastor entries...'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error fetching pastors...'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
 //PASTOR ADD
 router.post('/pastor-add', function (req, res, next) {
     let ui = req.body;
@@ -285,6 +307,28 @@ router.post('/pastor-delete', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
     }
 });
+//LOCATION GET
+router.post('/location-get', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            dbServ.ULocations.findAll({where: {us_id: cbk.us_id}})
+                .then(location => {
+                    if(location){
+                        let locs = JSON.stringify(location);
+                        res.jsonp({status: true, data: JSON.parse(pst), msg: 'Location successfully loaded !'});
+                    }else {
+                        res.jsonp({status: false, data: [], msg: 'No location entries...'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error fetching pastors...'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
 //LOCATION ADD AND ASSIGN PASTOR
 router.post('/location-add', function (req, res, next) {
     let ui = req.body;
@@ -313,7 +357,40 @@ router.post('/location-update', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesFalse(ui)) {
         tokenAuth.verify(ui.token, res, cbk => {
-
+            dbServ.ULocations.findOne({where: {l_email: ui.email}})
+                .then(result => {
+                    if (result) {
+                        //check if password change required
+                        let d = ui.data;
+                        if (d.l_new_password) {
+                            d.l_password = func.sha1Pass(d.l_new_password);
+                        }
+                        result.update(d);
+                        res.jsonp({status: true, data: result, msg: 'Successfully updated !'});
+                    } else {
+                        res.jsonp({status: false, data: [], msg: 'No email related location found...'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error updating location data'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
+//LOCATION DELETE
+router.post('/location-delete', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            dbServ.ULocations.destroy({where: {l_email: ui.email}})
+                .then(result => {
+                    res.jsonp({status: true, data: [], msg: 'Successfully deleted !'});
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Unable to delete location'});
+                })
         });
     } else {
         res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});

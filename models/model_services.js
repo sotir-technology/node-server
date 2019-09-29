@@ -95,6 +95,7 @@ Services.hasMany(UServices, {foreignKey: 's_id', as: 'services_sales'});
 UServices.belongsTo(Services, {foreignKey: 's_id', targetKey: 's_id', as: "services"});
 UPastors.belongsTo(UServices, {foreignKey: 'us_id', targetKey: 'us_id', as: "uservices"});
 ULocations.belongsTo(UPastors, {foreignKey: 'p_id', targetKey: 'p_id', as: "upastor"});
+ULocations.belongsTo(UServices, {foreignKey: 'us_id', targetKey: 'us_id', as: "uservices"});
 
 sequelize.sync();
 
