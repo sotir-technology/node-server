@@ -4,6 +4,7 @@ let dbAcc = require('./../../models/model_account');
 let dbServ = require('./../../models/model_services');
 let func = require('./../../lib/functions');
 let token = require('jsonwebtoken');
+let tokenAuth = require('./../../lib/TokenAuth');
 
 //start creating account for church
 router.post('/get', function (req, res, next) {
@@ -189,7 +190,12 @@ router.post('/login', function (req, res, next) {
                 if (service) {
                     let d = JSON.stringify(service);
                     d = JSON.parse(d);
-                    d.token = token.sign(d, func.tokenConfig.secrete, {expiresIn: func.tokenConfig.exp});
+                    d.token = tokenAuth.sign({
+                        us_id: d.us_id,
+                        us_email: d.us_email,
+                        us_identity: d.us_identity,
+                        us_enabled: d.us_enabled
+                    });
                     res.jsonp({status: true, data: d, msg: 'Success !'});
                 } else {
                     res.jsonp({status: false, data: [], msg: 'Invalid service login details'});
@@ -202,13 +208,124 @@ router.post('/login', function (req, res, next) {
         res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
     }
 });
+
+///START EXTERNAL SERVICE PERFORMANCE////
+//PASTOR ADD
+router.post('/pastor-add', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            let data = ui.data;
+            data.us_id = cbk.us_id;
+            dbServ.UPastors.findOrCreate({where: {p_email: data.p_email}, defaults: data})
+                .then(([result, created]) => {
+                    if (created) {
+                        res.jsonp({
+                            status: true,
+                            data: result.get({plain: true}),
+                            msg: 'Pastor created successfully'
+                        });
+                    } else {
+                        res.jsonp({
+                            status: true,
+                            data: result.get({plain: true}),
+                            msg: 'Pastor account already exist'
+                        });
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error adding up a new pastor'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
+//PASTOR UPDATE
+router.post('/pastor-update', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            let data = ui.data;
+            dbServ.UPastors.findOne({where: {p_email: ui.email, us_id: cbk.us_id}})
+                .then(pastor => {
+                    if (pastor) {
+                        pastor.update(data);
+                        res.jsonp({status: true, data: pastor, msg: 'Updated Successfully !'});
+                    } else {
+                        res.jsonp({status: false, data: [], msg: 'No matching pastor for update, use valid email'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error occur updating pastor'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
+//PASTOR DELETE
+router.post('/pastor-delete', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            dbServ.UPastors.destroy({where: {p_email: ui.email, us_id: cbk.us_id}})
+                .then(destroyed => {
+                    if (destroyed) {
+                        res.jsonp({status: true, data: [], msg: 'Pastor deleted !'});
+                    } else {
+                        res.jsonp({status: false, data: [], msg: 'Not a valid pastor email address'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error deleting / removing pastor'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
+//LOCATION ADD AND ASSIGN PASTOR
+router.post('/location-add', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+            let data = ui.data;
+            data.l_password = func.sha1Pass(ui.data.l_password);
+            dbServ.ULocations.findOrCreate({where: {l_email: ui.email}, defaults: data})
+                .then(([location, created]) => {
+                    if (created) {
+                        res.jsonp({status: true, data: location.get({plain: true}), msg: 'Locations created !'});
+                    } else {
+                        res.jsonp({status: false, data: [], msg: 'Location already exist...'});
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'Error creating new location.'});
+                })
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
+//LOCATION UPDATE
+router.post('/location-update', function (req, res, next) {
+    let ui = req.body;
+    if (func.checkJSONValuesFalse(ui)) {
+        tokenAuth.verify(ui.token, res, cbk => {
+
+        });
+    } else {
+        res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
+    }
+});
 //blank router
 router.post('/blank', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesFalse(ui)) {
-        func.tokenApi(ui.token, res, (dec) => {
+        tokenAuth.verify(ui.token, res, cbk => {
 
-        })
+        });
     } else {
         res.jsonp({status: false, data: [], msg: 'Expected value does\'t meet the server requirement'});
     }

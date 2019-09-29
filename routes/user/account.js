@@ -3,7 +3,7 @@ let router = express.Router();
 let db = require('./../../models/model_account');
 let dbservices = require('./../../models/model_services');
 let func = require('./../../lib/functions');
-let token = require('jsonwebtoken');
+let tokenAuth = require('./../../lib/TokenAuth');
 
 //start creating account for church
 router.post('/create', function (req, res, next) {
@@ -53,7 +53,12 @@ router.post('/login', function (req, res, next) {
             .then((account) => {
                 if (account) {
                     //make a standard token
-                    let tkey = token.sign(account.get({plain: true}), func.tokenConfig.secrete, {expiresIn: func.tokenConfig.exp});
+                    let raw_json = account.get({plain: true});
+                    let tkey = tokenAuth.sign({
+                        a_id: raw_json.a_id,
+                        a_email: raw_json.a_email,
+                        a_phone: raw_json.a_phone
+                    });
                     account.update({a_token: tkey});
                     res.jsonp({status: true, data: account.get({plain: true}), msg: 'Successful'})
                 } else {
@@ -72,21 +77,23 @@ router.post('/login', function (req, res, next) {
 router.post('/get', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesExpect(ui, 1)) {
-        db.Account.findOne({where: {a_token: ui.token}})
-            .then(account => {
-                if (account) {
-                    res.jsonp({
-                        status: true,
-                        data: account.get({plain: true}),
-                        msg: 'Success'
-                    })
-                } else {
-                    res.jsonp({status: false, data: [], msg: 'Invalid token supplied...'})
-                }
-            })
-            .catch(err => {
-                res.jsonp({status: false, data: [], msg: 'An error has occur, server side'})
-            })
+        tokenAuth.verify(ui.token, res, cbk => {
+            db.Account.findOne({where: {a_email: cbk.a_email}})
+                .then(account => {
+                    if (account) {
+                        res.jsonp({
+                            status: true,
+                            data: account.get({plain: true}),
+                            msg: 'Success'
+                        })
+                    } else {
+                        res.jsonp({status: false, data: [], msg: 'Invalid token supplied...'})
+                    }
+                })
+                .catch(err => {
+                    res.jsonp({status: false, data: [], msg: 'An error has occur, server side'})
+                })
+        });
     } else {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'})
     }
@@ -96,15 +103,17 @@ router.post('/update-acc', function (req, res, next) {
     let ui = req.body;
     if (func.checkJSONValuesFalse(ui)) {
         //updated account
-        db.Account.findOne({where: {a_token: ui.token}})
-            .then((account) => {
-                //apply updates
-                account.update(ui);
-                res.jsonp({status: true, data: account.get({plain: true}), msg: 'Success'});
-            })
-            .catch((err) => {
-                res.jsonp({status: false, data: ui, msg: 'Cannot update non existing user account'});
-            })
+        tokenAuth.verify(ui.token, res, cbk => {
+            db.Account.findOne({where: {a_token: cbk.a_token}})
+                .then((account) => {
+                    //apply updates
+                    account.update(ui);
+                    res.jsonp({status: true, data: account.get({plain: true}), msg: 'Success'});
+                })
+                .catch((err) => {
+                    res.jsonp({status: false, data: ui, msg: 'Cannot update non existing user account'});
+                })
+        })
     } else {
         res.jsonp({status: false, data: [], msg: 'Supplied data contain an empty fields'});
     }
