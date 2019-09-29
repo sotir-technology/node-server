@@ -6,6 +6,7 @@ let logger = require('morgan');
 let indexRouter = require('./routes/index');
 let authRouter = require('./routes/user/account');
 let serviceRouter = require('./routes/services/services');
+let locationsRouter = require('./routes/services/locations');
 let func = require('./lib/functions');
 let app = express();
 let token = require('jsonwebtoken');
@@ -24,6 +25,7 @@ app.all('*', func.tokenController);
 app.use('/', indexRouter); //index router
 app.use('/user', authRouter); //general login class
 app.use('/services', serviceRouter); //general services class
+app.use('/locations', locationsRouter); //general services class
 
 //handle error
 app.use('*', function (req, res, next) {
